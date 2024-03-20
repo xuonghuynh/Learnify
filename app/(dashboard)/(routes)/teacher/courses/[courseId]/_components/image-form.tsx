@@ -1,24 +1,12 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import Image from "next/image";
 import { FileUpload } from "@/components/file-upload";
@@ -39,33 +27,22 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const router = useRouter();
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            imageUrl: initialData?.imageUrl || ""
-        }
-    });
-
-    const { isSubmitting, isValid } = form.formState;
-
     const onSubmit = async(values: z.infer<typeof formSchema>) => {
         try {
-            console.log(values)
             await axios.patch(`/api/courses/${courseId}`, values);
             toast({
-                description: "Course Description updated!",
+                description: "Course Image updated!",
                 variant: "success",
                 duration: 2000,
             })
             setIsEditing(false)
             router.refresh();
         } catch (error) {
-            console.log(error);
-            toast({
-                title: "Something went wrong!",
-                variant: "destructive",
-                duration: 2000,
-              })
+            // toast({
+            //     title: `${error}`,
+            //     variant: "destructive",
+            //     duration: 2000,
+            //   })
         }
       }
 
@@ -116,7 +93,9 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
                             <ImageIcon className="h-10 w-10 text-slate-500" />
                         </div>
                     ): (
-                        <Image className="object-cover rounded-md" src={initialData.imageUrl} alt="Course image" fill />
+                        <div className="aspect-video relative mt-2">
+                            <Image className="object-cover rounded-md" src={initialData.imageUrl} alt="Course image" fill />
+                        </div>
                     )}
                 </div>
             )}

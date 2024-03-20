@@ -23,6 +23,6 @@ export async function PATCH(req: Request, {params}: { params: { courseId: string
         return NextResponse.json(course, { status: 200 });
     } catch (error) {
         console.log("[COURSE_ID] Error: ", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return new NextResponse(`"Internal Server Error"`, { status: 500 });
     }
 }
