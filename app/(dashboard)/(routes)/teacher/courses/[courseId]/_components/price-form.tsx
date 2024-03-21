@@ -5,15 +5,15 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Pencil } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,6 @@ interface PriceFormProps {
 }
 
 const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
-
     const [isEditing, setIsEditing] = useState(false);
     const router = useRouter();
 
@@ -40,21 +39,21 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             price: initialData?.price || undefined,
-        }
+        },
     });
 
     const { isSubmitting, isValid } = form.formState;
 
-    const onSubmit = async(values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            console.log(values)
+            console.log(values);
             await axios.patch(`/api/courses/${courseId}`, values);
             toast({
                 description: "Course Description updated!",
                 variant: "success",
                 duration: 2000,
-            })
-            setIsEditing(false)
+            });
+            setIsEditing(false);
             router.refresh();
         } catch (error) {
             console.log(error);
@@ -62,9 +61,9 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
                 title: "Something went wrong!",
                 variant: "destructive",
                 duration: 2000,
-              })
+            });
         }
-      }
+    };
 
     return (
         <div className="mt-6 border bg-slate-100 rounded-md p-4">
@@ -75,12 +74,10 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
                     onClick={() => setIsEditing(!isEditing)}
                 >
                     {isEditing ? (
-                        <>
-                            Cancel
-                        </>
+                        <>Cancel</>
                     ) : (
                         <>
-                            <Pencil className="h-4 w-4 mr-2"/>
+                            <Pencil className="h-4 w-4 mr-2" />
                             Edit
                         </>
                     )}
@@ -88,28 +85,48 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
             </h3>
             {isEditing ? (
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-8"
+                    >
                         <FormField
                             control={form.control}
                             name="price"
                             render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                <Input placeholder="Set a price for your course..." {...field} disabled={isSubmitting} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Set a price for your course..."
+                                            {...field}
+                                            disabled={isSubmitting}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
                             )}
                         />
-                        <Button type="submit" disabled={isSubmitting || !isValid}>Save</Button>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting || !isValid}
+                        >
+                            Save
+                        </Button>
                     </form>
                 </Form>
-            ): (
-                <div className={cn("text-sm mt-2", !initialData.price && 'text-slate-500 italic')}>{!initialData.price ? 'No price' : formatPrice(initialData.price)}</div>
+            ) : (
+                <div
+                    className={cn(
+                        "text-sm mt-2",
+                        !initialData.price && "text-slate-500 italic"
+                    )}
+                >
+                    {!initialData.price
+                        ? "No price"
+                        : formatPrice(initialData.price)}
+                </div>
             )}
-            
         </div>
-    ) 
+    );
 };
 
 export default PriceForm;
