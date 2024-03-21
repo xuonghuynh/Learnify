@@ -1,11 +1,12 @@
 import CategoryForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/category-form";
 import DescriptionForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/description-form";
 import ImageForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/image-form";
+import PriceForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/price-form";
 import TitleForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/title-form";
 import IconBadget from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { LayoutDashboard } from "lucide-react";
+import { CircleAlertIcon, CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -26,10 +27,8 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     const categories = await db.category.findMany({
         orderBy: {
             name: "asc",
-        }
+        },
     });
-
-    console.log(categories);
 
     if (!course) {
         return redirect("/");
@@ -52,7 +51,9 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             <div className="items-center justify-between flex">
                 <div className="flex flex-col gap-y-2">
                     <h1 className="text-2xl font-medium">Course Setup</h1>
-                    <div className="text-sm text-slate-700">Please complete all fieds ({completionText})</div>
+                    <div className="text-sm text-slate-700">
+                        Please complete all fieds ({completionText})
+                    </div>
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -62,16 +63,38 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
                         <h2 className="text-xl">Customize your course</h2>
                     </div>
                     <TitleForm initialData={course} courseId={course.id} />
-                    <DescriptionForm initialData={course} courseId={course.id} />
-                    <ImageForm initialData={course} courseId={course.id} />
-                    <CategoryForm 
-                        initialData={course} 
-                        courseId={course.id} 
-                        options={categories.map((category) => ({ 
-                            label: category.name, 
-                            value: category.id 
-                        }))} 
+                    <DescriptionForm
+                        initialData={course}
+                        courseId={course.id}
                     />
+                    <ImageForm initialData={course} courseId={course.id} />
+                    <CategoryForm
+                        initialData={course}
+                        courseId={course.id}
+                        options={categories.map((category) => ({
+                            label: category.name,
+                            value: category.id,
+                        }))}
+                    />
+                </div>
+                <div className="space-y-6">
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                            <IconBadget icon={ListChecks} />
+                            <h2 className="text-xl">Course Chapters</h2>
+                        </div>
+                        <div>TODO: Chapters</div>
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                            <IconBadget icon={CircleDollarSign} />
+                            <h2 className="text-xl">Sell your Course</h2>
+                        </div>
+                        <PriceForm 
+                            initialData={course}
+                            courseId={course.id}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
