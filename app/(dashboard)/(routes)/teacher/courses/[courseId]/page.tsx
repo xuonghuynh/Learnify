@@ -1,5 +1,6 @@
 import AttachmentForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/attachment-form";
 import CategoryForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/category-form";
+import ChapterForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/chapter-form";
 import DescriptionForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/description-form";
 import ImageForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/image-form";
 import PriceForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/price-form";
@@ -7,7 +8,12 @@ import TitleForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_co
 import IconBadget from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { CircleAlertIcon, CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+    CircleDollarSign,
+    File,
+    LayoutDashboard,
+    ListChecks,
+} from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -24,12 +30,17 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             userId,
         },
         include: {
+            chapters: {
+                orderBy: {
+                    position: "asc",
+                }
+            },
             attachments: {
                 orderBy: {
                     createdAt: "desc",
-                }
-            }
-        }
+                },
+            },
+        },
     });
 
     const categories = await db.category.findMany({
@@ -48,6 +59,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
         course.imageUrl,
         course.price,
         course.categoryId,
+        course.chapters.some(chapter => chapter.isPublic)
     ];
 
     const totalFields = requiredFields.length;
@@ -91,24 +103,24 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
                             <IconBadget icon={ListChecks} />
                             <h2 className="text-xl">Course Chapters</h2>
                         </div>
-                        <div>TODO: Chapters</div>
-                    </div>
-                    <div>
-                        <div className="flex items-center gap-x-2">
-                            <IconBadget icon={CircleDollarSign} />
-                            <h2 className="text-xl">Sell your Course</h2>
-                        </div>
-                        <PriceForm 
+                        <ChapterForm
                             initialData={course}
                             courseId={course.id}
                         />
                     </div>
                     <div>
                         <div className="flex items-center gap-x-2">
+                            <IconBadget icon={CircleDollarSign} />
+                            <h2 className="text-xl">Sell your Course</h2>
+                        </div>
+                        <PriceForm initialData={course} courseId={course.id} />
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-x-2">
                             <IconBadget icon={File} />
                             <h2 className="text-xl">Resources & Attachments</h2>
                         </div>
-                        <AttachmentForm 
+                        <AttachmentForm
                             initialData={course}
                             courseId={course.id}
                         />
