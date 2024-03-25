@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function PATCH(req: Request, { params }: { params: { courseId: string, chapterId: string }}) {
     try {
         const { userId } = auth();
-        const values = await req.json();
+        const {isPublic, ...values} = await req.json();
         
         if(!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
@@ -29,9 +29,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
                 id: chapterId,
                 courseId
             },
-            data: {
-                ...values
-            }
+            data: {...values}
         });
 
         return NextResponse.json(chapter, { status: 200 });

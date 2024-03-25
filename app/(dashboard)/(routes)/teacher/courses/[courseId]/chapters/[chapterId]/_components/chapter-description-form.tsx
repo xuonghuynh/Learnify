@@ -18,8 +18,9 @@ import { Pencil } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Chapter } from "@prisma/client";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { Editor } from "@/components/editor";
+import { Preview } from "@/components/preview";
 
 const formSchema = z.object({
     description: z.string().min(1, {
@@ -103,11 +104,7 @@ const ChapterDescriptionForm = ({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="e.g. This chapter is about..."
-                                            {...field}
-                                            disabled={isSubmitting}
-                                        />
+                                        <Editor {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -129,7 +126,7 @@ const ChapterDescriptionForm = ({
                         </div>
                     ) : (
                         <div>
-                            {initialData.description}
+                            <Preview value={initialData.description} />
                         </div>
                     )}
                 </div>
