@@ -1,10 +1,11 @@
+import ChapterAccessFormForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-access-form";
 import ChapterDescriptionForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form";
 import ChapterTitlteForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-title-form";
 import IconBadget from "@/components/icon-badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { ArrowLeft, BackpackIcon, LayoutDashboard, Trash } from "lucide-react";
+import { ArrowLeft, BackpackIcon, EyeIcon, LayoutDashboard, Trash } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
@@ -76,14 +77,21 @@ const ChapterEdit = async ({
                     
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
                 <div>
                     <div className="flex items-center gap-x-2">
                         <IconBadget icon={LayoutDashboard} />
-                        <h2 className="text-xl">Customize your chapter</h2>
+                        <h2 className="text-xl font-medium">Customize your chapter</h2>
                     </div>
+
                     <ChapterTitlteForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
                     <ChapterDescriptionForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+
+                    <div className="flex items-center gap-x-2 mt-6 font-medium">
+                        <IconBadget icon={EyeIcon} />
+                        <h2 className="text-xl">Access Settings</h2>
+                    </div>
+                    <ChapterAccessFormForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
                 </div>
             </div>
         </div>
