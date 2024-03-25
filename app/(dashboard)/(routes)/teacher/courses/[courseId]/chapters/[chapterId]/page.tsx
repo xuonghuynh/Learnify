@@ -1,11 +1,12 @@
 import ChapterAccessFormForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-access-form";
 import ChapterDescriptionForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form";
 import ChapterTitlteForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-title-form";
+import ChapterVideoForm from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-video-form";
 import IconBadget from "@/components/icon-badge";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { ArrowLeft, BackpackIcon, EyeIcon, LayoutDashboard, Trash } from "lucide-react";
+import { ArrowLeft, BackpackIcon, EyeIcon, LayoutDashboard, Trash, Video } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
@@ -92,6 +93,13 @@ const ChapterEdit = async ({
                         <h2 className="text-xl">Access Settings</h2>
                     </div>
                     <ChapterAccessFormForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+                </div>
+                <div>
+                    <div className="flex items-center gap-x-2">
+                        <IconBadget icon={Video} />
+                        <h2 className="text-xl font-medium">Chapter video</h2>
+                    </div>
+                    <ChapterVideoForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
                 </div>
             </div>
         </div>

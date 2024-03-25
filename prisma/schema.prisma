@@ -65,7 +65,7 @@ model Chapter {
   isPublic    Boolean @default(false)
   isFree      Boolean @default(false)
 
-  muxData MudData?
+  muxData MuxData?
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -78,7 +78,7 @@ model Chapter {
   @@index([courseId])
 }
 
-model MudData {
+model MuxData {
   id         String  @id @default(uuid())
   assetId    String
   playbackId String?
