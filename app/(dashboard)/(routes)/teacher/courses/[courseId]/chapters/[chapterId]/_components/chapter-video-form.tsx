@@ -7,22 +7,32 @@ import { Button } from "@/components/ui/button";
 import { Pencil, PlusCircle, Video } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { Chapter, MuxData } from "@prisma/client";
-import { FileUpload } from "@/components/file-upload";
-import MuxPlayer from "@mux/mux-player-react"
+import { Chapter } from "@prisma/client";
+import MuxPlayer from "@mux/mux-player-react";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ReactPlayer from 'react-player'
+import dynamic from 'next/dynamic'
+
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form";
 
 const formSchema = z.object({
-    videoUrl: z.string().min(1, {
-        message: "Video url is required",
+    youtubeUrl: z.string().min(1, {
+        message: "Youtube url is required",
     }),
 });
 
 interface ChapterVideoFormProps {
     courseId: string;
     chapterId: string;
-    initialData: Chapter & {
-        muxData?: MuxData | null;
-    };
+    initialData: Chapter;
 }
 
 const ChapterVideoForm = ({
@@ -31,7 +41,17 @@ const ChapterVideoForm = ({
     chapterId,
 }: ChapterVideoFormProps) => {
     const [isEditing, setIsEditing] = useState(false);
+    const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
     const router = useRouter();
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            youtubeUrl: initialData.youtubeUrl || "",
+        },
+    });
+
+    const { isSubmitting, isValid } = form.formState;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
@@ -79,34 +99,45 @@ const ChapterVideoForm = ({
                 </Button>
             </h3>
             {isEditing ? (
-                <div>
-                    <FileUpload
-                        endpoint="chapterVideo"
-                        onChange={(url) => {
-                            if (url) {
-                                onSubmit({ videoUrl: url });
-                            }
-                        }}
-                    />
-                    <div className="text-xs text-muted-foreground mt-4">
-                        Upload this video&apos;s chapter
-                    </div>
-                </div>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-8"
+                    >
+                        <FormField
+                            control={form.control}
+                            name="youtubeUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Your youtube url here"
+                                            {...field}
+                                            disabled={isSubmitting}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting || !isValid}
+                        >
+                            Save
+                        </Button>
+                    </form>
+                </Form>
             ) : (
                 <div>
-                    {!initialData.videoUrl ? (
+                    {!initialData.youtubeUrl ? (
                         <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
                             <Video className="h-10 w-10 text-slate-500" />
                         </div>
                     ) : (
                         <div>
-                            <div className="">Video uploaded!</div>
                             <div className="aspect-video relative mt-2">
-                                <MuxPlayer
-                                    playbackId={
-                                        initialData?.muxData?.playbackId || ""
-                                    }
-                                />
+                                <ReactPlayer url={initialData.youtubeUrl} width={"100%"} height={"100%"} controls />
                             </div>
                             <div className="text-xs text-muted-foreground mt-2">
                                 Video can take a few minutes to process. Refresh

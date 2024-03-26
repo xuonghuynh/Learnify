@@ -41,31 +41,31 @@ export async function PATCH(
             data: { ...values },
         });
         console.log(values)
-        if (values.videoUrl) {
-            const existingMuxData = await db.muxData.findFirst({
-                where: {
-                    chapterId: params.chapterId,
-                },
-            });
-            if (existingMuxData) {
-                await video.assets.delete(existingMuxData.assetId);
-                await db.muxData.delete({ where: { id: existingMuxData.id } });
-            }
+        // if (values.videoUrl) {
+        //     const existingMuxData = await db.muxData.findFirst({
+        //         where: {
+        //             chapterId: params.chapterId,
+        //         },
+        //     });
+        //     if (existingMuxData) {
+        //         await video.assets.delete(existingMuxData.assetId);
+        //         await db.muxData.delete({ where: { id: existingMuxData.id } });
+        //     }
             
-            const asset = await video.assets.create({
-                input: values.videoUrl,
-                playback_policy: ["public"],
-                test: false
-            })
+        //     const asset = await video.assets.create({
+        //         input: values.videoUrl,
+        //         playback_policy: ["public"],
+        //         test: false
+        //     })
             
-            await db.muxData.create({
-                data: {
-                    chapterId,
-                    assetId: asset.id,
-                    playbackId: asset.playback_ids?.[0].id
-                }
-            });
-        }
+        //     await db.muxData.create({
+        //         data: {
+        //             chapterId,
+        //             assetId: asset.id,
+        //             playbackId: asset.playback_ids?.[0].id
+        //         }
+        //     });
+        // }
         
         
 
