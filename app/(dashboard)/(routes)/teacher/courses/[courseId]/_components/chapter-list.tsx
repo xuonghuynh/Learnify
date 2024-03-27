@@ -75,7 +75,7 @@ const ChapterList = ({ items, onReorder, onEdit }: ChapterListProps) => {
                                     <div
                                         className={cn(
                                             "flex items-center gap-x-2 bg-slate-200 border border-slate-200 text-slate-700 rounded-md mb-4 text-sm",
-                                            chapter.isPublic &&
+                                            chapter.isPublished &&
                                                 "bg-sky-100 border-sky-200"
                                         )}
                                         ref={provided.innerRef}
@@ -84,7 +84,7 @@ const ChapterList = ({ items, onReorder, onEdit }: ChapterListProps) => {
                                         <div
                                             className={cn(
                                                 "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
-                                                chapter.isPublic &&
+                                                chapter.isPublished &&
                                                     "border-r-sky-200 hover:bg-sky-200"
                                             )}
                                             {...provided.dragHandleProps}
@@ -96,8 +96,8 @@ const ChapterList = ({ items, onReorder, onEdit }: ChapterListProps) => {
                                                 {chapter.isFree && (
                                                     <Badge>Free</Badge>
                                                 )}
-                                                <Badge className={cn("bg-slate-500", chapter.isPublic && "bg-sky-700")}>
-                                                    {chapter.isPublic ? "Published" : "Draft"}
+                                                <Badge className={cn("bg-slate-500", chapter.isPublished && "bg-sky-700")}>
+                                                    {chapter.isPublished ? "Published" : "Draft"}
                                                 </Badge>
                                                 <Pencil className="w-4 h-4 hover:opacity-75 cursor-pointer transition" onClick={() => onEdit(chapter.id)} />
                                         </div>

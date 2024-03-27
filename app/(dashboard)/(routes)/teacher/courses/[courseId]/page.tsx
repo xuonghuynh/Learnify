@@ -59,12 +59,13 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
         course.imageUrl,
         course.price,
         course.categoryId,
-        course.chapters.some(chapter => chapter.isPublic)
+        course.chapters.some(chapter => chapter.isPublished)
     ];
 
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
     const completionText = `${completedFields}/${totalFields}`;
+    const isComplete = requiredFields.every(Boolean);
 
     return (
         <div className="p-6">

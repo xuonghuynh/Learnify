@@ -50,7 +50,7 @@ const ChapterEdit = async ({
     const requiredFields = [
         chapter.title,
         chapter.description,
-        chapter.videoUrl,
+        chapter.youtubeUrl,
     ];
 
     const totalFields = requiredFields.length;
