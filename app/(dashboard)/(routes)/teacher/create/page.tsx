@@ -108,7 +108,7 @@ const CreateCoursePage = () => {
                         )}
                         />
                         <div className="flex items-center gap-x-2">
-                            <Link href={"/"}>
+                            <Link href={"/teacher/courses"}>
                                 <Button variant="ghost">Cancel</Button>
                             </Link>
                             <Button disabled={!isValid || isSubmitting} type="submit">Submit</Button>
