@@ -1,35 +1,47 @@
-'use client'
-import { Button } from '@/components/ui/button';
-import { UserButton } from '@clerk/nextjs'
-import { Ghost, LogOut } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
+"use client";
+import SearchInput from "@/components/search-input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { UserButton } from "@clerk/nextjs";
+import { Ghost, LogOut } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
 const NavbarRoutes = () => {
     const pathname = usePathname();
     const router = useRouter();
 
     const isTeacherPage = pathname?.startsWith("/teacher");
-    const isPlayerPage = pathname?.includes("/chapter"); 
+    const isPlayerPage = pathname?.includes("/chapter");
+    const isSearchPage = pathname === "/search";
     return (
-        <div className='flex gap-x-2 ml-auto'>
-            {isTeacherPage || isPlayerPage ? (
-                <Link href={"/"}>
-                    <Button size="sm" variant="ghost">
-                        <LogOut className='h-4 w-4 mr-2'/>
-                        Exit
-                    </Button>
-                </Link>
-            ) : (
-                <Link href={"/teacher/courses"}>
-                    <Button size={"sm"} variant="ghost">Teacher Mode</Button>
-                </Link>
+        <>
+            {isSearchPage && (
+                <div className="hidden md:block">
+                    <SearchInput />
+                </div>
             )}
-            
-            <UserButton afterSignOutUrl='/'></UserButton>
-        </div>
-    )
-}
+            <div className="flex gap-x-2 ml-auto">
+                {isTeacherPage || isPlayerPage ? (
+                    <Link href={"/"}>
+                        <Button size="sm" variant="ghost">
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Exit
+                        </Button>
+                    </Link>
+                ) : (
+                    <Link href={"/teacher/courses"}>
+                        <Button size={"sm"} variant="ghost">
+                            Teacher Mode
+                        </Button>
+                    </Link>
+                )}
 
-export default NavbarRoutes
+                <UserButton afterSignOutUrl="/"></UserButton>
+            </div>
+        </>
+    );
+};
+
+export default NavbarRoutes;

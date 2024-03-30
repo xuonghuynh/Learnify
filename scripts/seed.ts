@@ -26,6 +26,9 @@ async function main() {
                 },
                 {
                     name: "Filming",
+                },
+                {
+                    name: "Music"
                 }
             ]
         });
