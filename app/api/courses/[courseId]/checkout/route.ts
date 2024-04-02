@@ -82,10 +82,7 @@ export async function POST(request: Request, { params }: { params: { courseId: s
                 courseId: course.id,
                 userId: user.id
             },
-            customer: stripeCustomer.stripeCustomerId,
-            automatic_tax: {
-                enabled: true
-            }
+            customer: stripeCustomer.stripeCustomerId
         })
 
         return NextResponse.json({url: session.url});
