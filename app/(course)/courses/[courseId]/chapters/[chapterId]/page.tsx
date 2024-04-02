@@ -1,4 +1,5 @@
 import getChapter from "@/actions/get-chapter";
+import CourseProgressButton from "@/app/(course)/courses/[courseId]/_components/course-progress-button";
 import CourseEnrollButton from "@/app/(course)/courses/[courseId]/chapters/[chapterId]/_components/course-enroll-button";
 import VideoPlayer from "@/app/(course)/courses/[courseId]/chapters/[chapterId]/_components/video-player";
 import Banner from "@/components/banner";
@@ -35,10 +36,7 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
         purchase,
     }: any = await getChapter({ chapterId, userId, courseId });
 
-    console.log("LGOS", attachments);
-
     const isLocked = !chapter.isFree && !purchase;
-    console.log(isLocked)
     const isCompleteOnEnd = !!purchase && !userProgress?.[0]?.isCompleted;
 
     return (
@@ -69,11 +67,21 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
                 </div>
                 <div>
                     <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-                        <h2 className="text-3xl font-semibold mb-2">{chapter.title}</h2>
+                        <h2 className="text-3xl font-semibold mb-2">
+                            {chapter.title}
+                        </h2>
                         {purchase ? (
-                            <div></div>
+                            <CourseProgressButton
+                                chapterId={chapterId}
+                                nextChapterId={nextChapter?.id}
+                                isCompleted={!!userProgress?.isCompleted}
+                                courseId={courseId}
+                            />
                         ) : (
-                            <CourseEnrollButton courseId={courseId} price={course.price} />
+                            <CourseEnrollButton
+                                courseId={courseId}
+                                price={course.price}
+                            />
                         )}
                     </div>
                     <Separator />
@@ -92,7 +100,9 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
                                         className="flex items-center p-3 w-full bg-sky-200 border text-sky-700 rounded-md hover:underline"
                                     >
                                         <File />
-                                        <p className="line-clamp-1">{attachment.name}</p>
+                                        <p className="line-clamp-1">
+                                            {attachment.name}
+                                        </p>
                                     </a>
                                 ))}
                             </div>

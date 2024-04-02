@@ -26,8 +26,6 @@ export const getProgress = async (userId: string, courseId: string): Promise<num
 
         const progressPercentage = (validCompleteChapters / publishedChapterIds.length) * 100
 
-        console.log(publishedChapter);
-
         return progressPercentage
     } catch (error) {
         console.log("GET_PROGRESS",error)

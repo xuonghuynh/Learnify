@@ -3,6 +3,8 @@ import { Loader2, Lock } from "lucide-react";
 import React from "react";
 import ReactPlayer from "react-player";
 import dynamic from "next/dynamic";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface VideoPlayerProps {
     youtubeUrl: string;
@@ -24,6 +26,23 @@ const VideoPlayer = ({
     isCompleteOnEnd,
 }: VideoPlayerProps) => {
     const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+    const router = useRouter();
+    const onVideoEnd = async() => {
+        try {
+            if(isCompleteOnEnd) {
+                await axios.post(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+                    isCompleted: true
+                });
+                if(nextChapterId) {
+                    router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+                }
+                router.refresh();
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="relative aspect-video">
             {!isLocked && (
@@ -44,6 +63,7 @@ const VideoPlayer = ({
                         width={"100%"}
                         height={"100%"}
                         controls
+                        onEnded={onVideoEnd}
                         // playing={true}
                     />
                 </div>
