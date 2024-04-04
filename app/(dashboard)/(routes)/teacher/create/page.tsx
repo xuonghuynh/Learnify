@@ -20,6 +20,8 @@ import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { useToast } from '@/components/ui/use-toast'
 
+export const runtime = 'edge'
+
 const formSchema = z.object({
     title: z.string().min(2, {
       message: "Title must be at least 2 characters",

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const runtime = 'edge'
+
 const CoursesPage = async () => {
 
     const { userId } = auth();

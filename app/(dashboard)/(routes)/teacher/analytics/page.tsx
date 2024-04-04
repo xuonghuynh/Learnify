@@ -6,6 +6,8 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const runtime = 'edge'
+
 const AnalyticsPage = async () => {
     const { userId } = auth();
 

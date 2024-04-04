@@ -11,6 +11,8 @@ import { File } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const runtime = 'edge'
+
 interface ChapterIdPageProps {
     params: {
         chapterId: string;

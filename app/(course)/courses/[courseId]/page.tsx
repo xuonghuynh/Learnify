@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const runtime = 'edge'
+
 const CourseIdPage = async({ params }: { params: { courseId: string } }) => {
     const { courseId } = params;
     const { userId } = auth();

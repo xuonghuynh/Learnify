@@ -5,6 +5,8 @@ import { url } from "inspector";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
+export const runtime = 'edge';
+
 export async function POST(request: Request, { params }: { params: { courseId: string } }) { 
     try {
         const user = await currentUser();
