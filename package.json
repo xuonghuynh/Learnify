@@ -42,6 +42,7 @@
     "react-icons": "^5.0.1",
     "react-player": "^2.15.1",
     "react-quill": "^2.0.0",
+    "recharts": "^2.12.4",
     "sharp": "^0.33.3",
     "stripe": "^14.23.0",
     "tailwind-merge": "^2.2.1",
