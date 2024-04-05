@@ -3,7 +3,6 @@ import Sidebar from '@/app/(dashboard)/_components/sidebar';
 import { Toaster } from '@/components/ui/toaster';
 import React from 'react';
 
-export const runtime = "edge";
 
 const DashboardLayout = ({ children }: {children: React.ReactNode}) => {
   return (

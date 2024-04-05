@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
-export const runtime = 'edge'
-
 export async function PUT(
     req: Request,
     { params }: { params: { courseId: string } }

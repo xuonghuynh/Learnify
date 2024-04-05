@@ -7,8 +7,6 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";
 
-export const runtime = 'edge'
-
 interface SearchPageProps {
     searchParams: { title: string; categoryId: string };
 }

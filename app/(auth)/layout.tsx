@@ -1,6 +1,5 @@
 import React from 'react'
 
-export const runtime = "edge";
 
 const AuthLayout = ({children}: Readonly<{children: React.ReactNode;}>) => {
   return (

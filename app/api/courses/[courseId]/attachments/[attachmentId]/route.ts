@@ -2,8 +2,6 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export const runtime = 'edge'
-
 export async function DELETE(
     req: Request,
     { params }: { params: { courseId: string; attachmentId: string } }
